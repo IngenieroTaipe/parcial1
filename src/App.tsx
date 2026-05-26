@@ -12,7 +12,8 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 // import ExamEditor   from './components/Committee/ExamEditor';
 // import ExamList     from './components/Student/ExamList';
 // import TakeExam     from './components/Student/TakeExam';
-// import CVPage       from './components/PublicProfile/CVPage';
+import CVPage          from './components/PublicProfile/CVPage';
+import CertificatePage from './components/PublicProfile/CertificatePage';
 
 function Placeholder({ label }: { label: string }) {
   return (
@@ -42,9 +43,9 @@ export default function App() {
         <Route path="/examenes"        element={<Placeholder label="Lista de Exámenes (Benjamin)" />} />
         <Route path="/examenes/:id"    element={<Placeholder label="Rendir Examen (Benjamin)" />} />
 
-        {/* DAVID */}
-        <Route path="/cv/:userId"      element={<Placeholder label="CV / Perfil Público (David)" />} />
-        <Route path="/certificado/:hash" element={<Placeholder label="Vista Certificado (David)" />} />
+        {/* DAVID - implementado */}
+        <Route path="/cv/:userId"        element={<CVPage />} />
+        <Route path="/certificado/:hash" element={<CertificatePage />} />
 
         {/* 404 */}
         <Route path="*" element={<Placeholder label="404 - Página no encontrada" />} />
