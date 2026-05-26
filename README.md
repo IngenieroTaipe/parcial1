@@ -11,11 +11,101 @@ Plataforma de gestion de examenes y certificaciones construida con Vite + React 
 | Yauri Torres Benjamin Raul | yauri-torres-benjamin-raul | Rendicion de Examenes | src/components/Student/ |
 | Toribio Anselmo David Angel | toribio-anselmo-david-angel | CV y Certificados PDF | src/components/PublicProfile/ |
 
-## Configuracion inicial
+## Requisitos previos
+
+Antes de empezar, asegurate de tener instalado lo siguiente en tu computadora:
+
+- Node.js version 18 o superior: https://nodejs.org
+- Git: https://git-scm.com
+- Un editor de codigo (se recomienda Visual Studio Code): https://code.visualstudio.com
+
+Para verificar que Node y Git esten instalados, abre una terminal y ejecuta:
+
+```bash
+node -v
+git -v
+```
+
+## Instalacion y ejecucion del proyecto
+
+Sigue estos pasos en orden. Solo hay que hacerlo una vez al clonar el proyecto.
+
+### Paso 1 - Clonar el repositorio
+
+```bash
+git clone https://github.com/IngenieroTaipe/parcial1.git
+```
+
+### Paso 2 - Entrar a la carpeta del proyecto
+
+```bash
+cd parcial1
+```
+
+### Paso 3 - Instalar dependencias
 
 ```bash
 npm install
+npm install -D @vitejs/plugin-react vite typescript @types/react @types/react-dom
+```
+
+### Paso 4 - Cambiarse a tu rama de trabajo
+
+Reemplaza el nombre de la rama con la tuya:
+
+```bash
+# Barja Ortiz Erick Gerson
+git checkout barja-ortiz-erick-gerson
+
+# Navarro Serva Lesly Brenda
+git checkout navarro-serva-lesly-brenda
+
+# Yauri Torres Benjamin Raul
+git checkout yauri-torres-benjamin-raul
+
+# Toribio Anselmo David Angel
+git checkout toribio-anselmo-david-angel
+```
+
+### Paso 5 - Ejecutar el proyecto
+
+```bash
 npm run dev
+```
+
+Esto abre el servidor local. Abre tu navegador y entra a:
+
+```
+http://localhost:5173
+```
+
+### Solo para David (Toribio Anselmo David Angel) - modulo PDF
+
+Tu modulo necesita una dependencia adicional para generar PDFs. Ejecuta esto una vez:
+
+```bash
+npm install html2pdf.js
+npm install -D @types/html2pdf.js
+```
+
+## Comandos Git del dia a dia
+
+```bash
+# Ver en que rama estas
+git branch
+
+# Ver que archivos cambiaste
+git status
+
+# Guardar tus cambios
+git add src/components/TuCarpeta/
+git commit -m "feat(modulo): descripcion de lo que hiciste"
+
+# Subir tus cambios a GitHub
+git push origin nombre-de-tu-rama
+
+# Traer los ultimos cambios de main (hacer esto antes de empezar a trabajar cada dia)
+git pull origin main
 ```
 
 ## Estructura del proyecto
