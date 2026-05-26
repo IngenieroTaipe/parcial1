@@ -44,6 +44,32 @@ export interface Certificate {
   publicUrl: string;
 }
 
+// ─── Currículum Digital ───────────────────────────────────────────────────────
+
+export interface WorkExperience {
+  id: string;
+  company: string;
+  position: string;
+  startDate: string;
+  endDate: string; // 'Actualidad' si es presente
+  description: string;
+}
+
+export interface Education {
+  id: string;
+  institution: string;
+  degree: string;
+  field: string;
+  startDate: string;
+  endDate: string;
+}
+
+export interface UserProfile {
+  userId: string; // Documento del usuario
+  workExperience: WorkExperience[];
+  education: Education[];
+}
+
 // ─── Claves de Local Storage ─────────────────────────────────────────────────
 // Úsenlas como constantes para evitar typos.
 export const LS_KEYS = {
@@ -52,4 +78,5 @@ export const LS_KEYS = {
   EXAMS: 'exams',
   ATTEMPTS: 'attempts',
   CERTIFICATES: 'certificates',
+  PROFILES: 'profiles',
 } as const;

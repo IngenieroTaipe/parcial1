@@ -25,9 +25,43 @@ function AdminRoute({ children }: { children: React.ReactNode }) {
 
 function NotFound() {
   return (
-    <div style={{ padding: '2rem', fontFamily: 'sans-serif' }}>
-      <h2>404 — Página no encontrada</h2>
-      <p>Revisa la URL o regresa a la página de inicio de sesión.</p>
+    <div style={{
+      minHeight: '100vh',
+      background: 'linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%)',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      fontFamily: 'Inter, sans-serif',
+    }}>
+      <div style={{
+        background: 'rgba(255,255,255,0.05)',
+        backdropFilter: 'blur(12px)',
+        borderRadius: '20px',
+        border: '1px solid rgba(255,255,255,0.1)',
+        padding: '48px 64px',
+        textAlign: 'center',
+        maxWidth: '400px',
+      }}>
+        <p style={{ fontSize: '72px', fontWeight: 900, color: '#818cf8', margin: '0 0 8px', lineHeight: 1 }}>404</p>
+        <h2 style={{ margin: '0 0 12px', fontSize: '22px', fontWeight: 700, color: '#f1f5f9' }}>
+          Página no encontrada
+        </h2>
+        <p style={{ margin: '0 0 24px', color: '#64748b', fontSize: '14px' }}>
+          Revisa la URL o regresa al inicio de sesión.
+        </p>
+        <a href="/login" style={{
+          display: 'inline-block',
+          background: 'linear-gradient(135deg, #4f46e5, #7c3aed)',
+          color: '#fff',
+          borderRadius: '10px',
+          padding: '10px 24px',
+          fontSize: '14px',
+          fontWeight: 600,
+          textDecoration: 'none',
+        }}>
+          Ir al inicio
+        </a>
+      </div>
     </div>
   );
 }

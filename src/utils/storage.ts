@@ -1,7 +1,7 @@
 // src/utils/storage.ts
 // Funciones compartidas para leer/escribir en Local Storage de forma tipada.
 
-import { LS_KEYS, User, Exam, ExamAttempt, Certificate } from '../types';
+import { LS_KEYS, User, Exam, ExamAttempt, Certificate, UserProfile } from '../types';
 
 // ─── Genérico ─────────────────────────────────────────────────────────────────
 
@@ -93,4 +93,34 @@ export function addCertificate(cert: Certificate): void {
 
 export function getCertificatesByUser(userId: string): Certificate[] {
   return getCertificates().filter((c) => c.userId === userId);
+}
+
+// ─── Perfiles (CV Digital) ────────────────────────────────────────────────────
+
+export function getProfiles(): UserProfile[] {
+  return getItem<UserProfile[]>(LS_KEYS.PROFILES) ?? [];
+}
+
+export function saveProfiles(profiles: UserProfile[]): void {
+  setItem(LS_KEYS.PROFILES, profiles);
+}
+
+export function getProfileByUser(userId: string): UserProfile {
+  const profiles = getProfiles();
+  return profiles.find((p) => p.userId === userId) ?? {
+    userId,
+    workExperience: [],
+    education: [],
+  };
+}
+
+export function saveProfile(profile: UserProfile): void {
+  const profiles = getProfiles();
+  const idx = profiles.findIndex((p) => p.userId === profile.userId);
+  if (idx >= 0) {
+    profiles[idx] = profile;
+  } else {
+    profiles.push(profile);
+  }
+  saveProfiles(profiles);
 }
