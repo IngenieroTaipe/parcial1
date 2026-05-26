@@ -1,6 +1,3 @@
-// src/components/Committee/ExamEditor.tsx
-// RESPONSABLE: LESLY
-
 import { useState, useEffect } from 'react';
 import { Exam, Question } from '../../types';
 import { getExams, saveExams } from '../../utils/storage';
