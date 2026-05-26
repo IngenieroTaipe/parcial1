@@ -9,9 +9,15 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 // import Login        from './components/Auth/Login';
 // import Register     from './components/Auth/Register';
 // import UserList     from './components/Auth/UserList';
+<<<<<<< Updated upstream
 // import ExamEditor   from './components/Committee/ExamEditor';
 // import ExamList     from './components/Student/ExamList';
 // import TakeExam     from './components/Student/TakeExam';
+=======
+import ExamEditor   from './components/Committee/ExamEditor';
+import ExamList     from './components/Student/ExamList';
+import TakeExam     from './components/Student/TakeExam';
+>>>>>>> Stashed changes
 // import CVPage       from './components/PublicProfile/CVPage';
 
 function Placeholder({ label }: { label: string }) {
@@ -39,8 +45,8 @@ export default function App() {
         <Route path="/admin"    element={<Placeholder label="Editor de Exámenes (Lesly)" />} />
 
         {/* BENJAMIN */}
-        <Route path="/examenes"        element={<Placeholder label="Lista de Exámenes (Benjamin)" />} />
-        <Route path="/examenes/:id"    element={<Placeholder label="Rendir Examen (Benjamin)" />} />
+        <Route path="/examenes"        element={<ExamList />} />
+        <Route path="/examenes/:id"    element={<TakeExam />} />
 
         {/* DAVID */}
         <Route path="/cv/:userId"      element={<Placeholder label="CV / Perfil Público (David)" />} />
