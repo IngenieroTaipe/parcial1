@@ -1,24 +1,33 @@
 // src/App.tsx
 // RESPONSABLE: ERICK
 // Enrutamiento general de la aplicación.
-// TODO: Implementar react-router-dom con las rutas reales.
 
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import Login from './components/Auth/Login';
+import Register from './components/Auth/Register';
+import UserList from './components/Auth/UserList';
+import ExamEditor from './components/Committee/ExamEditor';
+import ExamList from './components/Student/ExamList';
+import TakeExam from './components/Student/TakeExam';
+import CVPage from './components/PublicProfile/CVPage';
+import CertificateView from './components/PublicProfile/CertificateView';
+import { getCurrentUser } from './utils/storage';
 
-// ── Páginas (descomentar a medida que cada integrante las cree) ──────────────
-// import Login        from './components/Auth/Login';
-// import Register     from './components/Auth/Register';
-// import UserList     from './components/Auth/UserList';
-// import ExamEditor   from './components/Committee/ExamEditor';
-// import ExamList     from './components/Student/ExamList';
-// import TakeExam     from './components/Student/TakeExam';
-// import CVPage       from './components/PublicProfile/CVPage';
+function PrivateRoute({ children }: { children: React.ReactNode }) {
+  const user = getCurrentUser();
+  return user ? <>{children}</> : <Navigate to="/login" replace />;
+}
 
-function Placeholder({ label }: { label: string }) {
+function AdminRoute({ children }: { children: React.ReactNode }) {
+  const user = getCurrentUser();
+  return user?.role === 'admin' ? <>{children}</> : <Navigate to="/login" replace />;
+}
+
+function NotFound() {
   return (
     <div style={{ padding: '2rem', fontFamily: 'sans-serif' }}>
-      <h2>🚧 {label}</h2>
-      <p>Este componente aún no ha sido implementado.</p>
+      <h2>404 — Página no encontrada</h2>
+      <p>Revisa la URL o regresa a la página de inicio de sesión.</p>
     </div>
   );
 }
@@ -27,27 +36,16 @@ export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Redirige raíz → login */}
         <Route path="/" element={<Navigate to="/login" replace />} />
-
-        {/* ERICK */}
-        <Route path="/login"    element={<Placeholder label="Login (Erick)" />} />
-        <Route path="/register" element={<Placeholder label="Registro (Erick)" />} />
-        <Route path="/users"    element={<Placeholder label="Lista de Usuarios (Erick)" />} />
-
-        {/* LESLY */}
-        <Route path="/admin"    element={<Placeholder label="Editor de Exámenes (Lesly)" />} />
-
-        {/* BENJAMIN */}
-        <Route path="/examenes"        element={<Placeholder label="Lista de Exámenes (Benjamin)" />} />
-        <Route path="/examenes/:id"    element={<Placeholder label="Rendir Examen (Benjamin)" />} />
-
-        {/* DAVID */}
-        <Route path="/cv/:userId"      element={<Placeholder label="CV / Perfil Público (David)" />} />
-        <Route path="/certificado/:hash" element={<Placeholder label="Vista Certificado (David)" />} />
-
-        {/* 404 */}
-        <Route path="*" element={<Placeholder label="404 - Página no encontrada" />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/users" element={<AdminRoute><UserList /></AdminRoute>} />
+        <Route path="/admin" element={<PrivateRoute><ExamEditor /></PrivateRoute>} />
+        <Route path="/examenes" element={<PrivateRoute><ExamList /></PrivateRoute>} />
+        <Route path="/examenes/:id" element={<PrivateRoute><TakeExam /></PrivateRoute>} />
+        <Route path="/cv/:userId" element={<PrivateRoute><CVPage /></PrivateRoute>} />
+        <Route path="/certificado/:hash" element={<PrivateRoute><CertificateView /></PrivateRoute>} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   );
