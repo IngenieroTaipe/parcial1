@@ -9,7 +9,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 // import Login        from './components/Auth/Login';
 // import Register     from './components/Auth/Register';
 // import UserList     from './components/Auth/UserList';
-// import ExamEditor   from './components/Committee/ExamEditor';
+import ExamEditor   from './components/Committee/ExamEditor';
 // import ExamList     from './components/Student/ExamList';
 // import TakeExam     from './components/Student/TakeExam';
 // import CVPage       from './components/PublicProfile/CVPage';
@@ -36,7 +36,7 @@ export default function App() {
         <Route path="/users"    element={<Placeholder label="Lista de Usuarios (Erick)" />} />
 
         {/* LESLY */}
-        <Route path="/admin"    element={<Placeholder label="Editor de Exámenes (Lesly)" />} />
+        <Route path="/admin"    element={<ExamEditor />} />
 
         {/* BENJAMIN */}
         <Route path="/examenes"        element={<Placeholder label="Lista de Exámenes (Benjamin)" />} />
