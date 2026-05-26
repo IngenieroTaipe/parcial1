@@ -2,12 +2,14 @@
 // RESPONSABLE: LESLY
 
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Exam, Question } from '../../types';
-import { getExams, saveExams } from '../../utils/storage';
+import { getExams, saveExams, getCurrentUser, setCurrentUser } from '../../utils/storage';
 import QuestionForm from './QuestionForm';
 
 export default function ExamEditor() {
+  const navigate = useNavigate();
+  const currentUser = getCurrentUser();
   const [exam, setExam] = useState<Omit<Exam, 'id' | 'questions'>>({
     title: '',
     area: '',
@@ -91,9 +93,29 @@ export default function ExamEditor() {
             <p className="header-subtitle">Comité Técnico — Panel de Administración</p>
           </div>
         </div>
-        <Link to="/users" className="btn btn-secondary">
-          Ver Usuarios
-        </Link>
+        <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
+          {currentUser && (
+            <Link
+              to={`/cv/${currentUser.document}`}
+              className="btn btn-outline"
+              style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', textDecoration: 'none' }}
+            >
+              <svg width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+              </svg>
+              Mi CV
+            </Link>
+          )}
+          <Link to="/users" className="btn btn-secondary">
+            Ver Usuarios
+          </Link>
+          <button
+            className="btn btn-secondary"
+            onClick={() => { setCurrentUser(null); navigate('/login'); }}
+          >
+            Cerrar Sesión
+          </button>
+        </div>
       </div>
 
       <div className="exam-editor-body">

@@ -74,11 +74,21 @@ export default function ExamList() {
               </p>
             </div>
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', fontSize: '0.88rem', color: 'var(--text-secondary)' }}>
               <span><strong>DNI:</strong> {user.document}</span>
               <span><strong>Correo:</strong> {user.email}</span>
             </div>
+            <Link
+              to={`/cv/${user.document}`}
+              className="btn btn-outline"
+              style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', textDecoration: 'none' }}
+            >
+              <svg width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+              </svg>
+              Ver mi CV
+            </Link>
             <button className="btn btn-secondary" onClick={handleLogout}>
               Cerrar Sesión
             </button>

@@ -26,12 +26,7 @@ export default function Register() {
     event.preventDefault();
     setError('');
 
-    if (
-      isEmpty(documentValue) ||
-      isEmpty(fullName) ||
-      isEmpty(email) ||
-      isEmpty(specialty)
-    ) {
+    if (isEmpty(documentValue) || isEmpty(fullName) || isEmpty(email) || isEmpty(specialty)) {
       setError('Todos los campos son obligatorios.');
       return;
     }
@@ -59,6 +54,7 @@ export default function Register() {
 
     saveUsers([...users, newUser]);
     setCurrentUser(newUser);
+
     if (newUser.role === 'admin') {
       navigate('/admin', { replace: true });
     } else {
@@ -67,105 +63,120 @@ export default function Register() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#0f111a] via-[#151829] to-[#0f111a] px-4 py-12 relative overflow-hidden">
-      {/* Background blobs for premium glow effect */}
-      <div className="absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-[#10b981]/5 rounded-full blur-3xl pointer-events-none"></div>
-      <div className="absolute bottom-1/4 right-1/4 translate-x-1/2 translate-y-1/2 w-80 h-80 bg-emerald-500/5 rounded-full blur-3xl pointer-events-none"></div>
+    <div style={{
+      minHeight: '100vh',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      background: 'linear-gradient(135deg, #0f1117 0%, #151829 60%, #0f1117 100%)',
+      padding: '2rem',
+      fontFamily: 'Inter, sans-serif',
+    }}>
+      <div style={{ width: '100%', maxWidth: '420px' }}>
 
-      <div className="w-full max-w-md bg-[#1a1d2e]/60 backdrop-blur-xl border border-white/10 p-8 rounded-2xl shadow-2xl relative z-10">
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-400 tracking-tight">
-            Crear Cuenta
+        {/* Logo / Titulo */}
+        <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
+          <div style={{
+            width: '56px', height: '56px',
+            background: 'linear-gradient(135deg, #4f46e5, #7c3aed)',
+            borderRadius: '14px',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            margin: '0 auto 16px',
+            boxShadow: '0 8px 24px rgba(99,102,241,0.35)',
+          }}>
+            <svg width="28" height="28" fill="none" stroke="white" strokeWidth="2" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M4.26 10.147a60.438 60.438 0 0 0-.491 6.347A48.62 48.62 0 0 1 12 20.904a48.62 48.62 0 0 1 8.232-4.41 60.46 60.46 0 0 0-.491-6.347m-15.482 0a50.636 50.636 0 0 0-2.658-.813A59.906 59.906 0 0 1 12 3.493a59.902 59.902 0 0 1 10.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.717 50.717 0 0 1 12 13.489a50.702 50.702 0 0 1 7.74-3.342" />
+            </svg>
+          </div>
+          <h1 style={{ margin: '0 0 6px', fontSize: '24px', fontWeight: 800, color: '#f8fafc' }}>
+            Sistema de Certificaciones
           </h1>
-          <p className="text-sm text-gray-400 mt-2">
-            Regístrese en el Portal de Certificaciones
+          <p style={{ margin: 0, fontSize: '13px', color: '#64748b' }}>
+            UNCP — Facultad de Ingeniería de Sistemas
           </p>
         </div>
 
-        {error && (
-          <div className="mb-6 rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-200">
-            {error}
+        {/* Card */}
+        <div className="card" style={{ padding: '2rem' }}>
+          <h2 style={{ margin: '0 0 1.5rem', fontSize: '18px', fontWeight: 700, color: '#e8eaf6' }}>
+            Crear Cuenta
+          </h2>
+
+          {error && <p className="form-error" style={{ marginBottom: '1rem' }}>{error}</p>}
+
+          <form onSubmit={handleSubmit}>
+            <div className="form-grid">
+              <div className="form-group">
+                <label className="form-label" htmlFor="reg-document">Documento (DNI)</label>
+                <input
+                  id="reg-document"
+                  className="form-input"
+                  type="text"
+                  name="document"
+                  value={documentValue}
+                  onChange={(e) => setDocumentValue(e.target.value)}
+                  placeholder="Número de documento"
+                  autoComplete="off"
+                />
+              </div>
+
+              <div className="form-group">
+                <label className="form-label" htmlFor="reg-specialty">Especialidad</label>
+                <input
+                  id="reg-specialty"
+                  className="form-input"
+                  type="text"
+                  name="specialty"
+                  value={specialty}
+                  onChange={(e) => setSpecialty(e.target.value)}
+                  placeholder="Ej: Ing. de Sistemas"
+                />
+              </div>
+            </div>
+
+            <div className="form-group">
+              <label className="form-label" htmlFor="reg-fullname">Nombre Completo</label>
+              <input
+                id="reg-fullname"
+                className="form-input"
+                type="text"
+                name="fullName"
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
+                placeholder="Apellidos y Nombres"
+              />
+            </div>
+
+            <div className="form-group">
+              <label className="form-label" htmlFor="reg-email">Correo Electrónico</label>
+              <input
+                id="reg-email"
+                className="form-input"
+                type="email"
+                name="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="ejemplo@correo.com"
+              />
+            </div>
+
+            <p style={{ fontSize: '12px', color: '#475569', marginBottom: '1.25rem', lineHeight: 1.5 }}>
+              Registrarse con el documento <strong style={{ color: '#64748b' }}>"admin"</strong> otorga el rol de Administrador.
+            </p>
+
+            <button type="submit" className="btn btn-primary btn-large" style={{ width: '100%', justifyContent: 'center' }}>
+              Registrarse
+            </button>
+          </form>
+
+          <div style={{ textAlign: 'center', marginTop: '1.25rem', fontSize: '13px', color: '#64748b' }}>
+            ¿Ya tiene cuenta?{' '}
+            <Link to="/login" style={{ color: '#818cf8', fontWeight: 600, textDecoration: 'none' }}>
+              Iniciar Sesión
+            </Link>
           </div>
-        )}
-
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-xs font-semibold text-emerald-300 uppercase tracking-wider mb-1.5">
-              Documento (DNI)
-            </label>
-            <input
-              value={documentValue}
-              onChange={(event) => setDocumentValue(event.target.value)}
-              type="text"
-              name="document"
-              className="w-full bg-[#0f1117]/80 border border-white/10 rounded-xl px-4 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition-all duration-200"
-              placeholder="Ingrese su número de documento"
-            />
-          </div>
-
-          <div>
-            <label className="block text-xs font-semibold text-emerald-300 uppercase tracking-wider mb-1.5">
-              Nombre Completo
-            </label>
-            <input
-              value={fullName}
-              onChange={(event) => setFullName(event.target.value)}
-              type="text"
-              name="fullName"
-              className="w-full bg-[#0f1117]/80 border border-white/10 rounded-xl px-4 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition-all duration-200"
-              placeholder="Nombre y Apellidos"
-            />
-          </div>
-
-          <div>
-            <label className="block text-xs font-semibold text-emerald-300 uppercase tracking-wider mb-1.5">
-              Correo Electrónico
-            </label>
-            <input
-              value={email}
-              onChange={(event) => setEmail(event.target.value)}
-              type="email"
-              name="email"
-              className="w-full bg-[#0f1117]/80 border border-white/10 rounded-xl px-4 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition-all duration-200"
-              placeholder="ejemplo@correo.com"
-            />
-          </div>
-
-          <div>
-            <label className="block text-xs font-semibold text-emerald-300 uppercase tracking-wider mb-1.5">
-              Especialidad
-            </label>
-            <input
-              value={specialty}
-              onChange={(event) => setSpecialty(event.target.value)}
-              type="text"
-              name="specialty"
-              className="w-full bg-[#0f1117]/80 border border-white/10 rounded-xl px-4 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition-all duration-200"
-              placeholder="Ej: Redes y Telecomunicaciones"
-            />
-          </div>
-
-          <div className="rounded-lg bg-emerald-500/5 border border-emerald-500/10 p-3 text-xs text-emerald-300/80 leading-relaxed">
-            Nota: Al ingresar "admin" como documento, la cuenta se creará con el rol de Administrador.
-          </div>
-
-          <button
-            type="submit"
-            className="w-full py-3 bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-semibold rounded-xl hover:from-emerald-500 hover:to-teal-500 transition-all duration-200 transform hover:-translate-y-0.5 active:translate-y-0 shadow-lg shadow-emerald-600/20"
-          >
-            Registrarse
-          </button>
-        </form>
-
-        <div className="mt-8 text-center text-sm">
-          <span className="text-gray-400">¿Ya tiene una cuenta? </span>
-          <Link
-            to="/login"
-            className="text-emerald-400 font-semibold hover:text-emerald-300 hover:underline transition-all duration-200"
-          >
-            Iniciar Sesión
-          </Link>
         </div>
+
       </div>
     </div>
   );

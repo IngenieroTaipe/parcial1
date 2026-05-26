@@ -1,150 +1,198 @@
-# Sistema de Certificaciones - Parcial 1
+# Sistema de Certificaciones — UNCP
 
-Plataforma de gestion de examenes y certificaciones construida con Vite + React + TypeScript + Tailwind CSS v4.
+**Curso:** Desarrollo de Aplicaciones Web  
+**Facultad:** Ingeniería de Sistemas — Universidad Nacional del Centro del Perú  
+**Stack:** React 18 · Vite · TypeScript · Tailwind CSS v4 · LocalStorage
 
-## Equipo y Ramas
+---
 
-| Integrante | Rama | Modulo | Carpeta |
-|---|---|---|---|
-| Barja Ortiz Erick Gerson | barja-ortiz-erick-gerson | Gestion de Usuarios y Enrutamiento | src/components/Auth/ |
-| Navarro Serva Lesly Brenda | navarro-serva-lesly-brenda | Comite Tecnico - Examenes | src/components/Committee/ |
-| Yauri Torres Benjamin Raul | yauri-torres-benjamin-raul | Rendicion de Examenes | src/components/Student/ |
-| Toribio Anselmo David Angel | toribio-anselmo-david-angel | CV y Certificados PDF | src/components/PublicProfile/ |
-
-## Requisitos previos
-
-Antes de empezar, asegurate de tener instalado lo siguiente en tu computadora:
-
-- Node.js version 18 o superior: https://nodejs.org
-- Git: https://git-scm.com
-- Un editor de codigo (se recomienda Visual Studio Code): https://code.visualstudio.com
-
-Para verificar que Node y Git esten instalados, abre una terminal y ejecuta:
+## Cómo ejecutar el proyecto
 
 ```bash
-node -v
-git -v
-```
-
-## Instalacion y ejecucion del proyecto
-
-Sigue estos pasos en orden. Solo hay que hacerlo una vez al clonar el proyecto.
-
-### Paso 1 - Clonar el repositorio
-
-```bash
-git clone https://github.com/IngenieroTaipe/parcial1.git
-```
-
-### Paso 2 - Entrar a la carpeta del proyecto
-
-```bash
-cd parcial1
-```
-
-### Paso 3 - Instalar dependencias
-
-```bash
+# Instalar dependencias (solo la primera vez)
 npm install
-npm install -D @vitejs/plugin-react vite typescript @types/react @types/react-dom
-```
 
-### Paso 4 - Cambiarse a tu rama de trabajo
-
-Reemplaza el nombre de la rama con la tuya:
-
-```bash
-# Barja Ortiz Erick Gerson
-git checkout barja-ortiz-erick-gerson
-
-# Navarro Serva Lesly Brenda
-git checkout navarro-serva-lesly-brenda
-
-# Yauri Torres Benjamin Raul
-git checkout yauri-torres-benjamin-raul
-
-# Toribio Anselmo David Angel
-git checkout toribio-anselmo-david-angel
-```
-
-### Paso 5 - Ejecutar el proyecto
-
-```bash
+# Iniciar servidor de desarrollo
 npm run dev
 ```
 
-Esto abre el servidor local. Abre tu navegador y entra a:
+Abre tu navegador en **http://localhost:5173**
+
+---
+
+## Flujo completo de la aplicación
 
 ```
-http://localhost:5173
+/login  ──▶  ¿Rol admin?  ──▶  /admin   (Editor de Exámenes)
+                │                  │
+                │                  ├──▶ /users        (Lista de usuarios)
+                │                  └──▶ /cv/:dni      (Ver / editar mi CV)
+                │
+                └──▶  /examenes    (Portal de Exámenes — estudiante)
+                           │
+                           ├──▶ /examenes/:id        (Rendir examen)
+                           ├──▶ /cv/:dni             (Ver / editar mi CV)
+                           └──▶ /certificado/:hash   (URL pública del certificado)
 ```
 
-### Solo para David (Toribio Anselmo David Angel) - modulo PDF
+---
 
-Tu modulo necesita una dependencia adicional para generar PDFs. Ejecuta esto una vez:
+## Cómo ingresar como ADMINISTRADOR
 
-```bash
-npm install html2pdf.js
-npm install -D @types/html2pdf.js
+1. Ve a **http://localhost:5173/register**
+2. Registra una cuenta con los siguientes datos:
+
+| Campo | Valor |
+|---|---|
+| Documento (DNI) | `admin` |
+| Nombre completo | Tu nombre |
+| Correo | tu@correo.com |
+| Especialidad | La que quieras |
+
+> El sistema detecta automáticamente que el documento es `"admin"` y asigna el rol de **Administrador**.
+
+3. Serás redirigido al **Panel de Administración** (`/admin`).
+
+### Qué puede hacer el Administrador
+
+- **Crear exámenes** — con título, área temática, preguntas de opción múltiple o respuesta abierta, y porcentaje mínimo de aprobación.
+- **Agregar / Eliminar preguntas** — formulario dinámico con validación.
+- **Ver la lista de usuarios registrados** — desde el botón "Ver Usuarios" en el panel.
+- **Cerrar sesión** — botón en la barra superior.
+- **Ver y editar su propio CV** — botón "Mi CV" en la barra superior.
+
+---
+
+## Cómo ingresar como ESTUDIANTE
+
+1. Ve a **http://localhost:5173/register**
+2. Registra una cuenta con cualquier DNI que no sea `"admin"`.
+3. Serás redirigido al **Portal de Exámenes** (`/examenes`).
+
+### Qué puede hacer el Estudiante
+
+| Acción | Cómo |
+|---|---|
+| Ver exámenes disponibles | Pantalla principal `/examenes` |
+| Buscar exámenes por nombre o área | Barra de búsqueda + filtro |
+| Rendir un examen | Botón **Rendir Examen** en la tarjeta |
+| Ver su puntaje final | Pantalla de resultados automática al enviar |
+| Ver su certificado digital | Botón **Ver mi certificado** (solo si aprobó) |
+| Descargar el certificado en PDF | Botón dentro del modal del certificado |
+| Ver y editar su CV | Botón **Ver mi CV** en la barra superior |
+| Cerrar sesión | Botón **Cerrar Sesión** en la barra superior |
+
+> **Control de intentos:** Cada estudiante puede rendir cada examen **una sola vez**. Si ya lo rindió, el botón aparece deshabilitado.
+
+---
+
+## Cómo ver un Currículum Vitae (CV)
+
+Cada usuario tiene una URL pública única para su CV:
+
+```
+http://localhost:5173/cv/<DNI_DEL_USUARIO>
 ```
 
-## Comandos Git del dia a dia
-
-```bash
-# Ver en que rama estas
-git branch
-
-# Ver que archivos cambiaste
-git status
-
-# Guardar tus cambios
-git add src/components/TuCarpeta/
-git commit -m "feat(modulo): descripcion de lo que hiciste"
-
-# Subir tus cambios a GitHub
-git push origin nombre-de-tu-rama
-
-# Traer los ultimos cambios de main (hacer esto antes de empezar a trabajar cada dia)
-git pull origin main
+**Ejemplo:** Si tu DNI es `12345678`, tu CV está en:
 ```
+http://localhost:5173/cv/12345678
+```
+
+### Desde dentro de la app
+
+- **Estudiante:** Botón **"Ver mi CV"** en la barra superior de `/examenes`
+- **Administrador:** Botón **"Mi CV"** en la barra superior de `/admin`
+- **Desde el resultado de un examen aprobado:** Botón "Ver mi Certificado" redirige al CV
+
+### Qué contiene el CV
+
+| Sección | Editable por el dueño |
+|---|---|
+| Información personal (DNI, correo, especialidad) | No (se actualiza desde el registro) |
+| Resumen de rendimiento (exámenes, puntajes) | No (automático) |
+| Certificaciones obtenidas con URL pública | No (automático al aprobar) |
+| **Experiencia Laboral** | **Sí — solo el propietario** |
+| **Formación Académica** | **Sí — solo el propietario** |
+
+> El CV es **público** — cualquiera puede verlo con la URL. Solo el dueño de la cuenta (sesión activa) puede editar la experiencia y formación.
+
+---
+
+## Cómo ver un certificado públicamente
+
+Al aprobar un examen se genera automáticamente una URL pública:
+
+```
+http://localhost:5173/certificado/<HASH_UNICO>
+```
+
+Esta URL puede compartirse con cualquier persona para verificar el certificado. También puedes descargar el certificado en PDF desde la vista.
+
+---
 
 ## Estructura del proyecto
 
 ```
 src/
-├── types.ts                <- Contratos de datos compartidos (NO modificar sin acuerdo)
-├── utils/
-│   └── storage.ts          <- Funciones de Local Storage tipadas
 ├── components/
-│   ├── Auth/               <- Barja Ortiz Erick Gerson
-│   ├── Committee/          <- Navarro Serva Lesly Brenda
-│   ├── Student/            <- Yauri Torres Benjamin Raul
-│   └── PublicProfile/      <- Toribio Anselmo David Angel
-└── App.tsx                 <- Barja Ortiz Erick Gerson (rutas)
+│   ├── Auth/
+│   │   ├── Login.tsx          # Inicio de sesión
+│   │   ├── Register.tsx       # Registro de usuarios
+│   │   └── UserList.tsx       # Lista de usuarios (admin)
+│   ├── Committee/
+│   │   ├── ExamEditor.tsx     # Crear y gestionar exámenes (admin)
+│   │   └── QuestionForm.tsx   # Formulario de pregunta
+│   ├── Student/
+│   │   ├── ExamList.tsx       # Portal de exámenes (estudiante)
+│   │   └── TakeExam.tsx       # Rendir un examen
+│   └── PublicProfile/
+│       ├── CVPage.tsx          # Perfil / CV público y editable
+│       ├── CertificatePage.tsx # Vista pública del certificado
+│       └── CertificateView.tsx # Componente del certificado (PDF)
+├── types.ts                   # Interfaces TypeScript compartidas
+├── utils/
+│   └── storage.ts             # Funciones de LocalStorage tipadas
+├── App.tsx                    # Rutas de la aplicación
+└── index.css                  # Estilos globales + variables CSS
 ```
 
-## Claves de Local Storage
+---
 
-| Clave | Tipo | Descripcion |
-|---|---|---|
-| users | User[] | Lista de usuarios registrados |
-| currentUser | User | Usuario actualmente logueado |
-| exams | Exam[] | Examenes creados por el comite |
-| attempts | ExamAttempt[] | Intentos de examen de los estudiantes |
-| certificates | Certificate[] | Certificados generados |
+## Persistencia de datos (LocalStorage)
 
-## Reglas del equipo
+Toda la información se guarda en el navegador:
 
-1. Cada integrante trabaja exclusivamente en su carpeta. No modificar archivos ajenos.
-2. Los archivos src/types.ts y src/utils/storage.ts son compartidos. Cualquier cambio requiere acuerdo de todo el equipo.
-3. Usar siempre las constantes LS_KEYS al acceder a Local Storage para evitar errores de tipeo.
-4. Formato de commits: tipo(modulo): descripcion. Ejemplo: feat(auth): agregar validacion de DNI.
-5. Antes de hacer push, ejecutar git pull origin main para traer los ultimos cambios de la base.
-6. Cada integrante trabaja en su propia rama. Ver el archivo TAREA_*.md en tu rama para el detalle de tu modulo.
+| Clave | Contenido |
+|---|---|
+| `users` | Usuarios registrados |
+| `currentUser` | Sesión activa |
+| `exams` | Exámenes creados por el comité |
+| `attempts` | Resultados de exámenes rendidos |
+| `certificates` | Certificados generados |
+| `profiles` | Experiencia laboral y formación académica del CV |
 
-## Archivos de tareas por integrante
+> Para reiniciar todos los datos abre las **DevTools** (`F12`) → pestaña **Application** → **Local Storage** → borra las claves.
 
-- TAREA_ERICK.md - Modulo de autenticacion y enrutamiento
-- TAREA_LESLY.md - Modulo del comite tecnico
-- TAREA_BENJAMIN.md - Modulo de rendicion de examenes
-- TAREA_DAVID.md - Modulo de CV y certificados
+---
+
+## Funcionalidades implementadas
+
+| # | Requisito del parcial | Puntos | Estado |
+|---|---|---|---|
+| 1 | Edición y gestión de exámenes (comité técnico) | 6 | Completo |
+| 2 | Rendición de exámenes online por usuarios | 5 | Completo |
+| 3 | Generación de certificados con URL pública | 3 | Completo |
+| 4 | Gestión de usuarios registrados | 3 | Completo |
+| 5 | Currículum digital vinculado a certificaciones | 3 | Completo |
+
+---
+
+## Equipo de desarrollo
+
+| Integrante | Módulo |
+|---|---|
+| Barja Ortiz Erick Gerson | Autenticación, enrutamiento (`/login`, `/register`, `/users`) |
+| Navarro Serva Lesly Brenda | Editor de exámenes (`/admin`) |
+| Yauri Torres Benjamin Raul | Portal de exámenes estudiante (`/examenes`, `/examenes/:id`) |
+| Toribio Anselmo David Angel | CV y certificados (`/cv/:id`, `/certificado/:hash`) |
