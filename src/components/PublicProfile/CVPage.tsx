@@ -9,7 +9,6 @@ import {
   getCertificates,
   getExams,
   addCertificate,
-  getCertificatesByUser,
 } from '../../utils/storage';
 import { User, ExamAttempt, Exam, Certificate } from '../../types';
 import CertificateView from './CertificateView';

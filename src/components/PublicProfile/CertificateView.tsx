@@ -29,9 +29,9 @@ export default function CertificateView({ attempt, user, examTitle, examArea }: 
     const opciones = {
       margin: 10,
       filename: `certificado-${user.document}-${attempt.examId}.pdf`,
-      image: { type: 'jpeg', quality: 0.98 },
+      image: { type: 'jpeg' as const, quality: 0.98 },
       html2canvas: { scale: 2, useCORS: true },
-      jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' },
+      jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' as const },
     };
     html2pdf().set(opciones).from(certRef.current).save();
   };
