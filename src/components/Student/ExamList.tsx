@@ -1,6 +1,9 @@
+// src/components/Student/ExamList.tsx
+// RESPONSABLE: BENJAMIN
+
 import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { getExams, getCurrentUser, getAttemptsByUser } from '../../utils/storage';
+import { getExams, getCurrentUser, getAttemptsByUser, setCurrentUser } from '../../utils/storage';
 import { Exam, ExamAttempt, User } from '../../types';
 
 export default function ExamList() {
@@ -13,17 +16,19 @@ export default function ExamList() {
 
   useEffect(() => {
     const currentUser = getCurrentUser();
-    // Validar sesión: Si no hay usuario logueado o no es un estudiante/usuario, redirigir
     if (!currentUser) {
       navigate('/login');
       return;
     }
     setUser(currentUser);
-
-    // Cargar exámenes e intentos
     setExams(getExams());
     setAttempts(getAttemptsByUser(currentUser.document));
   }, [navigate]);
+
+  const handleLogout = () => {
+    setCurrentUser(null);
+    navigate('/login');
+  };
 
   if (!user) {
     return null;
@@ -69,16 +74,25 @@ export default function ExamList() {
               </p>
             </div>
           </div>
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', fontSize: '0.88rem', color: 'var(--text-secondary)' }}>
-            <span><strong>DNI:</strong> {user.document}</span>
-            <span><strong>Correo:</strong> {user.email}</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', fontSize: '0.88rem', color: 'var(--text-secondary)' }}>
+              <span><strong>DNI:</strong> {user.document}</span>
+              <span><strong>Correo:</strong> {user.email}</span>
+            </div>
+            <button className="btn btn-secondary" onClick={handleLogout}>
+              Cerrar Sesión
+            </button>
           </div>
         </div>
       </div>
 
       {/* Header del Portal de Exámenes */}
       <div className="exam-editor-header" style={{ borderBottom: 'none', marginBottom: '1.5rem', paddingBottom: 0 }}>
-        <div className="header-icon">🎓</div>
+        <div className="header-icon">
+          <svg className="w-8 h-8 text-[#8b84ff]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M4.26 10.147a60.438 60.438 0 0 0-.491 6.347A48.62 48.62 0 0 1 12 20.904a48.62 48.62 0 0 1 8.232-4.41 60.46 60.46 0 0 0-.491-6.347m-15.482 0a50.636 50.636 0 0 0-2.658-.813A59.906 59.906 0 0 1 12 3.493a59.902 59.902 0 0 1 10.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.717 50.717 0 0 1 12 13.489a50.702 50.702 0 0 1 7.74-3.342M12 2.25V9.75m0 0 3-3m-3 3-3-3" />
+          </svg>
+        </div>
         <div>
           <h1 className="header-title">Portal de Certificaciones</h1>
           <p className="header-subtitle">Exámenes disponibles para tu especialización y desarrollo profesional</p>
@@ -115,7 +129,9 @@ export default function ExamList() {
       <div className="exam-editor-body">
         {filteredExams.length === 0 ? (
           <div className="empty-state" style={{ padding: '3.5rem 2rem' }}>
-            <span className="empty-icon">📁</span>
+            <svg className="w-12 h-12 text-[#9da5c8]/30 mx-auto mb-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 13.5h3.86a2.25 2.25 0 0 1 2.008 1.24l.885 1.77a2.25 2.25 0 0 0 2.007 1.24h1.98a2.25 2.25 0 0 0 2.007-1.24l.885-1.77a2.25 2.25 0 0 1 2.007-1.24h3.86m-18 0h18M2.25 13.5V6.25A2.25 2.25 0 0 1 4.5 4h5.25a2.25 2.25 0 0 1 2.008 1.24l.885 1.77a2.25 2.25 0 0 0 2.007 1.24h5.1c1.243 0 2.25 1.007 2.25 2.25v7.25c0 1.243-1.007 2.25-2.25 2.25H4.5A2.25 2.25 0 0 1 2.25 13.5Z" />
+            </svg>
             <p style={{ fontSize: '1.1rem', fontWeight: 500, marginBottom: '0.5rem' }}>
               No se encontraron exámenes disponibles
             </p>
@@ -128,7 +144,6 @@ export default function ExamList() {
         ) : (
           <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '1rem' }}>
             {filteredExams.map((exam) => {
-              // Buscar si hay un intento previo
               const previousAttempt = attempts.find((a) => a.examId === exam.id);
 
               return (
@@ -161,7 +176,7 @@ export default function ExamList() {
                     {previousAttempt ? (
                       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '0.25rem' }}>
                         <span className={`question-badge ${previousAttempt.passed ? 'open' : 'multiple'}`} style={{ fontSize: '0.85rem', padding: '0.3rem 0.75rem' }}>
-                          {previousAttempt.passed ? '✓ Aprobado' : '✗ Reprobado'}
+                          {previousAttempt.passed ? 'Aprobado' : 'Reprobado'}
                         </span>
                         <span style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', fontWeight: 600 }}>
                           Puntaje: {previousAttempt.score}% (Mín. {exam.passingScore}%)
@@ -176,8 +191,8 @@ export default function ExamList() {
 
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: '1px solid var(--border)', paddingTop: '1rem', marginTop: '0.5rem', flexWrap: 'wrap', gap: '1rem' }}>
                     <div style={{ display: 'flex', gap: '1.5rem', fontSize: '0.88rem', color: 'var(--text-secondary)' }}>
-                      <span>📋 <strong>{exam.questions.length}</strong> {exam.questions.length === 1 ? 'Pregunta' : 'Preguntas'}</span>
-                      <span>🎯 <strong>Mínimo {exam.passingScore}%</strong> para aprobar</span>
+                      <span>Preguntas: <strong>{exam.questions.length}</strong></span>
+                      <span>Mínimo <strong>{exam.passingScore}%</strong> para aprobar</span>
                     </div>
 
                     <div>
@@ -188,7 +203,7 @@ export default function ExamList() {
                             className="btn btn-secondary"
                             style={{ gap: '0.5rem' }}
                           >
-                            <span>🎓</span> Ver mi certificado
+                            Ver mi certificado
                           </Link>
                         ) : (
                           <button
@@ -206,7 +221,7 @@ export default function ExamList() {
                           onClick={() => navigate(`/examenes/${exam.id}`)}
                           style={{ gap: '0.5rem' }}
                         >
-                          <span>✍️</span> Rendir Examen
+                          Rendir Examen
                         </button>
                       )}
                     </div>

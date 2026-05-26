@@ -1,3 +1,6 @@
+// src/components/Student/TakeExam.tsx
+// RESPONSABLE: BENJAMIN
+
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getExamById, getCurrentUser, getAttemptsByUser, addAttempt } from '../../utils/storage';
@@ -38,7 +41,6 @@ export default function TakeExam() {
     const userAttempts = getAttemptsByUser(currentUser.document);
     const alreadyTaken = userAttempts.find((a) => a.examId === currentExam.id);
     if (alreadyTaken) {
-      // Redirigir al listado si ya lo rindió
       navigate('/examenes');
       return;
     }
@@ -98,13 +100,11 @@ export default function TakeExam() {
       date: new Date().toISOString(),
     };
 
-    // Guardar en Local Storage
     addAttempt(newAttempt);
     setAttemptResult(newAttempt);
     setSubmitted(true);
   };
 
-  // Si ya fue enviado, renderizar la pantalla de resultados
   if (submitted && attemptResult) {
     const totalQuestions = exam.questions.length;
     const correctCount = Math.round((attemptResult.score / 100) * totalQuestions);
@@ -112,9 +112,20 @@ export default function TakeExam() {
     return (
       <div className="exam-editor-container" style={{ maxWidth: '650px' }}>
         <div className="card" style={{ padding: '2.5rem 2rem', textAlign: 'center' }}>
-          <div style={{ fontSize: '4rem', marginBottom: '1rem' }}>
-            {attemptResult.passed ? '🎉' : '❌'}
-          </div>
+          
+          {attemptResult.passed ? (
+            <div className="w-16 h-16 bg-emerald-500/10 text-emerald-400 rounded-full flex items-center justify-center mx-auto mb-4 border border-emerald-500/20">
+              <svg className="w-8 h-8" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+              </svg>
+            </div>
+          ) : (
+            <div className="w-16 h-16 bg-red-500/10 text-red-400 rounded-full flex items-center justify-center mx-auto mb-4 border border-red-500/20">
+              <svg className="w-8 h-8" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
+              </svg>
+            </div>
+          )}
 
           <h2 style={{ fontSize: '1.75rem', fontWeight: 800, color: 'var(--text-primary)', marginBottom: '0.25rem' }}>
             {attemptResult.passed ? '¡Examen Aprobado!' : 'Examen No Aprobado'}
@@ -123,7 +134,6 @@ export default function TakeExam() {
             {exam.title} • {exam.area}
           </p>
 
-          {/* Tarjeta de Resumen */}
           <div style={{
             background: 'rgba(255, 255, 255, 0.02)',
             border: '1px solid var(--border)',
@@ -163,7 +173,7 @@ export default function TakeExam() {
                 onClick={() => navigate(`/cv/${user.document}`)}
                 style={{ width: '100%', justifyContent: 'center', padding: '0.75rem' }}
               >
-                🎓 Ver mi Certificado
+                Ver mi Certificado
               </button>
             )}
             <button
@@ -183,7 +193,11 @@ export default function TakeExam() {
     <div className="exam-editor-container" style={{ maxWidth: '800px' }}>
       {/* Encabezado */}
       <div className="exam-editor-header" style={{ marginBottom: '1.5rem', paddingBottom: '1rem' }}>
-        <div className="header-icon">✍️</div>
+        <div className="header-icon">
+          <svg className="w-8 h-8 text-[#8b84ff]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125" />
+          </svg>
+        </div>
         <div>
           <h1 className="header-title">{exam.title}</h1>
           <p className="header-subtitle">
@@ -271,9 +285,9 @@ export default function TakeExam() {
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
               <div style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>
                 {isAllAnswered ? (
-                  <span style={{ color: 'var(--success)', fontWeight: 600 }}>✓ Todas las preguntas han sido respondidas</span>
+                  <span style={{ color: 'var(--success)', fontWeight: 600 }}>Todas las preguntas han sido respondidas</span>
                 ) : (
-                  <span>⚠️ Falta responder preguntas para poder enviar</span>
+                  <span style={{ color: 'var(--danger)', fontWeight: 600 }}>Falta responder preguntas para poder enviar</span>
                 )}
               </div>
               <div style={{ display: 'flex', gap: '0.75rem' }}>
@@ -298,7 +312,7 @@ export default function TakeExam() {
                     boxShadow: isAllAnswered ? '0 4px 14px var(--accent-glow)' : 'none'
                   }}
                 >
-                  ✓ Enviar Examen
+                  Enviar Examen
                 </button>
               </div>
             </div>

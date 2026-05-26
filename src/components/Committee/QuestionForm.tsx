@@ -142,7 +142,7 @@ export default function QuestionForm({ onAdd, onCancel }: QuestionFormProps) {
           Cancelar
         </button>
         <button className="btn btn-primary" onClick={handleSubmit}>
-          ✓ Confirmar pregunta
+          Confirmar pregunta
         </button>
       </div>
     </div>

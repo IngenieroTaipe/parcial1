@@ -2,6 +2,7 @@
 // RESPONSABLE: LESLY
 
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { Exam, Question } from '../../types';
 import { getExams, saveExams } from '../../utils/storage';
 import QuestionForm from './QuestionForm';
@@ -64,7 +65,7 @@ export default function ExamEditor() {
     setQuestions([]);
     setShowQuestionForm(false);
     setSavedExams(getExams());
-    setSuccessMsg(`✅ Examen "${nuevoExamen.title}" guardado exitosamente.`);
+    setSuccessMsg(`Examen "${nuevoExamen.title}" guardado exitosamente.`);
 
     setTimeout(() => setSuccessMsg(''), 4000);
   };
@@ -78,12 +79,21 @@ export default function ExamEditor() {
   return (
     <div className="exam-editor-container">
       {/* Header */}
-      <div className="exam-editor-header">
-        <div className="header-icon">📋</div>
-        <div>
-          <h1 className="header-title">Editor de Exámenes</h1>
-          <p className="header-subtitle">Comité Técnico — Panel de Administración</p>
+      <div className="exam-editor-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+          <div className="header-icon">
+            <svg className="w-8 h-8 text-[#8b84ff]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5.586a1 1 0 0 1 .707.293l5.414 5.414a1 1 0 0 1 .293.707V19a2 2 0 0 1-2 2Z" />
+            </svg>
+          </div>
+          <div>
+            <h1 className="header-title">Editor de Exámenes</h1>
+            <p className="header-subtitle">Comité Técnico — Panel de Administración</p>
+          </div>
         </div>
+        <Link to="/users" className="btn btn-secondary">
+          Ver Usuarios
+        </Link>
       </div>
 
       <div className="exam-editor-body">
@@ -152,8 +162,10 @@ export default function ExamEditor() {
             </div>
 
             {questions.length === 0 && !showQuestionForm && (
-              <div className="empty-state">
-                <span className="empty-icon">🗒️</span>
+              <div className="empty-state" style={{ padding: '2rem 1rem' }}>
+                <svg className="w-12 h-12 text-[#9da5c8]/30 mx-auto mb-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
+                </svg>
                 <p>Aún no hay preguntas. Agrega al menos una.</p>
               </div>
             )}
@@ -165,16 +177,19 @@ export default function ExamEditor() {
                   <div>
                     <p className="question-text">{q.text}</p>
                     <span className={`question-badge ${q.type}`}>
-                      {q.type === 'multiple' ? '📌 Múltiple opción' : '✏️ Abierta'}
+                      {q.type === 'multiple' ? 'Múltiple opción' : 'Abierta'}
                     </span>
                   </div>
                 </div>
                 <button
                   className="btn-icon btn-danger"
+                  style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                   onClick={() => handleRemoveQuestion(q.id)}
                   title="Eliminar pregunta"
                 >
-                  🗑️
+                  <svg className="w-5 h-5 text-red-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="m14.74 9-.34 6.6m-2.77 0-.34-6.6M9.25 16h8.5M4 6.05h16M19.32 9.176l-.818 10.84a1.5 1.5 0 0 1-1.493 1.384H6.992a1.5 1.5 0 0 1-1.493-1.384L4.68 9.176M9.25 6h5.5M10.5 3.5h3" />
+                  </svg>
                 </button>
               </div>
             ))}
@@ -196,7 +211,7 @@ export default function ExamEditor() {
               className="btn btn-primary btn-large"
               onClick={handleSaveExam}
             >
-              💾 Guardar Examen
+              Guardar Examen
             </button>
           </div>
         </section>
@@ -206,8 +221,10 @@ export default function ExamEditor() {
           <h2 className="card-title">Exámenes guardados ({savedExams.length})</h2>
 
           {savedExams.length === 0 ? (
-            <div className="empty-state">
-              <span className="empty-icon">📂</span>
+            <div className="empty-state" style={{ padding: '2rem 1rem' }}>
+              <svg className="w-12 h-12 text-[#9da5c8]/30 mx-auto mb-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 13.5h3.86a2.25 2.25 0 0 1 2.008 1.24l.885 1.77a2.25 2.25 0 0 0 2.007 1.24h1.98a2.25 2.25 0 0 0 2.007-1.24l.885-1.77a2.25 2.25 0 0 1 2.007-1.24h3.86m-18 0h18M2.25 13.5V6.25A2.25 2.25 0 0 1 4.5 4h5.25a2.25 2.25 0 0 1 2.008 1.24l.885 1.77a2.25 2.25 0 0 0 2.007 1.24h5.1c1.243 0 2.25 1.007 2.25 2.25v7.25c0 1.243-1.007 2.25-2.25 2.25H4.5A2.25 2.25 0 0 1 2.25 13.5Z" />
+              </svg>
               <p>No hay exámenes guardados aún.</p>
             </div>
           ) : (
